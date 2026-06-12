@@ -1,0 +1,5 @@
+outs:
+- md5: 1ebc47895fd8af4db82472bdf0b258b9
+  size: 31334
+  hash: md5
+  path: elo_history.parquet

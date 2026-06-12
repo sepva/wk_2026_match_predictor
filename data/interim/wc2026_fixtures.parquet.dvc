@@ -1,0 +1,5 @@
+outs:
+- md5: ad9c59559b1d66d9693a988d54af1686
+  size: 7381
+  hash: md5
+  path: wc2026_fixtures.parquet

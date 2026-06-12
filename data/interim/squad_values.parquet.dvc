@@ -1,0 +1,5 @@
+outs:
+- md5: 5632c00448e86f9977eb8079258e2364
+  size: 8296
+  hash: md5
+  path: squad_values.parquet
