@@ -7,4 +7,7 @@ apm_modules/
 
 # Environment
 .venv
-.dvc
+
+# DVC — ignore cache and tmp but track config and .dvc pointer files
+.dvc/cache
+.dvc/tmp

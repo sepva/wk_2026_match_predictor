@@ -1,0 +1,6 @@
+outs:
+- md5: 4edb0abe1a489745d0bf05830a877298.dir
+  size: 35876
+  nfiles: 5
+  hash: md5
+  path: wc2026_results

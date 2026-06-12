@@ -1,0 +1,6 @@
+outs:
+- md5: 765787c809627e1d4d2d5688d8aba30b.dir
+  size: 11519903
+  nfiles: 6
+  hash: md5
+  path: fivethirtyeight_spi

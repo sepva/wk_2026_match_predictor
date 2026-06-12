@@ -1,0 +1,6 @@
+outs:
+- md5: fca181f84f608caee73f837476328ef6.dir
+  size: 662016
+  nfiles: 3
+  hash: md5
+  path: elo_ratings

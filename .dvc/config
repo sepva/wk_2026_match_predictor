@@ -1,0 +1,4 @@
+[core]
+    remote = local_storage
+['remote "local_storage"']
+    url = /Users/seppe.vanswegenoven/projects/dvc_storage/wk_2026_match_predictor

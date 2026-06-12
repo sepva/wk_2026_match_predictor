@@ -1,0 +1,6 @@
+outs:
+- md5: b2191e5f91bc4c8754b050869341d185.dir
+  size: 9134354
+  nfiles: 3
+  hash: md5
+  path: fifa_rankings
