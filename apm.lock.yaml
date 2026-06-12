@@ -1,0 +1,219 @@
+lockfile_version: '1'
+generated_at: '2026-06-12T12:53:05.344801+00:00'
+apm_version: 0.16.0
+dependencies:
+- repo_url: AE-nv/data-ai-agent-best-practices
+  host: github.com
+  resolved_commit: e2fcd107b46c47646df6ee07788e54f236da062f
+  package_type: skill_bundle
+  deployed_files:
+  - .claude/skills/azure-verified-modules
+  - .claude/skills/python-scripts
+  content_hash: sha256:3a3d5a910b24de6bdc721dbd04e40b0fcf1061928886a79f12bdcd2a19b35e8a
+  skill_subset:
+  - azure-verified-modules
+  - python-scripts
+- repo_url: microsoft/apm
+  host: github.com
+  resolved_commit: 43a00c21e413342d5dd56c358a63aa64e12af131
+  virtual_path: packages/apm-guide
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .claude/agents/apm-expert.md
+  - .claude/skills/apm-usage
+  deployed_file_hashes:
+    .claude/agents/apm-expert.md: sha256:f6cded3e7eef97ad8fff06208bcfd5a0beafb9cfe810f78e10294c90e16fd8ae
+  content_hash: sha256:591ad3e822caaee7f8baa54d2c42b6948b237daca27c44ea31e3ebd05f0ee0b5
+  skill_subset:
+  - apm-usage
+- repo_url: microsoft/azure-skills
+  host: github.com
+  resolved_commit: 966330ee4fc61978b6e324993687e917125a1f36
+  package_type: marketplace_plugin
+  deployed_files:
+  - .claude/hooks/azure-skills/hooks/scripts/track-telemetry.sh
+  - .claude/skills/azure-cost
+  - .claude/skills/azure-prepare
+  deployed_file_hashes:
+    .claude/hooks/azure-skills/hooks/scripts/track-telemetry.sh: sha256:a88ec0a8971aeda8ae186c1ae6ceabfae90828e90b2e1bad0d8202bd0bc12265
+  content_hash: sha256:9dca675d87b2d7b292dca63f0753fa5826e694b23764da0dec4dd08e37ea4f0f
+  skill_subset:
+  - azure-cost
+  - azure-prepare
+- repo_url: obra/superpowers
+  host: github.com
+  resolved_commit: 6fd4507659784c351abbd2bc264c7162cfd386dc
+  package_type: marketplace_plugin
+  deployed_files:
+  - .claude/hooks/superpowers/hooks/run-hook.cmd
+  - .claude/hooks/superpowers/hooks/run-hook.cmd
+  - .claude/skills/brainstorming
+  - .claude/skills/dispatching-parallel-agents
+  - .claude/skills/executing-plans
+  - .claude/skills/finishing-a-development-branch
+  - .claude/skills/receiving-code-review
+  - .claude/skills/requesting-code-review
+  - .claude/skills/subagent-driven-development
+  - .claude/skills/systematic-debugging
+  - .claude/skills/test-driven-development
+  - .claude/skills/using-git-worktrees
+  - .claude/skills/using-superpowers
+  - .claude/skills/verification-before-completion
+  - .claude/skills/writing-plans
+  - .claude/skills/writing-skills
+  deployed_file_hashes:
+    .claude/hooks/superpowers/hooks/run-hook.cmd: sha256:d3d9c6199678dab2858e60509dde5e7414f13c2a2b5e48a38b1d368b6e1d6abb
+  content_hash: sha256:8b91ca49cbf065ffb70c91fc5b4f9a437fc56ab022203e6a617e89f9ca2730c4
+  skill_subset:
+  - brainstorming
+  - dispatching-parallel-agents
+  - executing-plans
+  - finishing-a-development-branch
+  - receiving-code-review
+  - requesting-code-review
+  - subagent-driven-development
+  - systematic-debugging
+  - test-driven-development
+  - using-git-worktrees
+  - using-superpowers
+  - verification-before-completion
+  - writing-plans
+  - writing-skills
+- repo_url: sepva/data_science_agent
+  host: github.com
+  resolved_commit: 96383ecf22b9306a24903d56e01e15816e924119
+  package_type: skill_bundle
+  deployed_files:
+  - .claude/skills/ds-ab-test
+  - .claude/skills/ds-brainstorm
+  - .claude/skills/ds-build
+  - .claude/skills/ds-cost-tracking
+  - .claude/skills/ds-data-quality
+  - .claude/skills/ds-data-versioning
+  - .claude/skills/ds-deploy
+  - .claude/skills/ds-document
+  - .claude/skills/ds-eda
+  - .claude/skills/ds-evaluate
+  - .claude/skills/ds-experiment
+  - .claude/skills/ds-experiment-record
+  - .claude/skills/ds-explainability
+  - .claude/skills/ds-fairness
+  - .claude/skills/ds-feature-engineering
+  - .claude/skills/ds-goals
+  - .claude/skills/ds-hpo
+  - .claude/skills/ds-improve
+  - .claude/skills/ds-mlops
+  - .claude/skills/ds-monitor
+  - .claude/skills/ds-research
+  - .claude/skills/ds-start
+  - .claude/skills/ds-training-serving-parity
+  content_hash: sha256:d8a10ea9ab8a484aae8dc76805c6125e7b0103c0a4c31e16b8e2f5eac23a4c43
+  skill_subset:
+  - ds-ab-test
+  - ds-brainstorm
+  - ds-build
+  - ds-cost-tracking
+  - ds-data-quality
+  - ds-data-versioning
+  - ds-deploy
+  - ds-document
+  - ds-eda
+  - ds-evaluate
+  - ds-experiment
+  - ds-experiment-record
+  - ds-explainability
+  - ds-fairness
+  - ds-feature-engineering
+  - ds-goals
+  - ds-hpo
+  - ds-improve
+  - ds-mlops
+  - ds-monitor
+  - ds-research
+  - ds-start
+  - ds-training-serving-parity
+- repo_url: vercel-labs/skills
+  host: github.com
+  resolved_commit: be0dd25b4a8665894a56f45ef582cc02ca802c39
+  package_type: skill_bundle
+  deployed_files:
+  - .claude/skills/find-skills
+  content_hash: sha256:42df04a146f00940b10810c7bf9fcf2bf0e8737f71b7cd1a8173c0dcd81a9b40
+  skill_subset:
+  - find-skills
+- repo_url: AE-nv/ae-prompt-library
+  host: github.com
+  resolved_commit: bf63c3deb827c78464983b73134dd7e4a86cc68d
+  depth: 2
+  resolved_by: sepva/data_science_agent
+  package_type: marketplace_plugin
+  content_hash: sha256:33b83698e93c5fa0c163d27917b9aea96c019388c2116a7fc22416e1147d7992
+  skill_subset:
+  - library/development/azure-devops-pipeline-templates
+  - library/development/terraform-module-creation
+- repo_url: huggingface/skills
+  host: github.com
+  resolved_commit: c68f1b08d9eb3af22cdc1d3fb60e9cdb78522556
+  depth: 2
+  resolved_by: sepva/data_science_agent
+  package_type: marketplace_plugin
+  deployed_files:
+  - .claude/skills/hf-cli
+  - .claude/skills/huggingface-datasets
+  - .claude/skills/huggingface-llm-trainer
+  - .claude/skills/huggingface-trackio
+  content_hash: sha256:b94bcc85fd787e8e671a2af3430dc881a0e535944651a1577c5767b54f4d1122
+  skill_subset:
+  - hf-cli
+  - huggingface-datasets
+  - huggingface-llm-trainer
+  - huggingface-trackio
+mcp_servers:
+- azure
+- com.microsoft/azure
+- duckdb
+- huggingface/hf-mcp-server
+- jupyter
+- mlflow
+- wandb
+mcp_configs:
+  azure:
+    name: azure
+    transport: stdio
+    args:
+    - -y
+    - '@azure/mcp@latest'
+    - server
+    - start
+    registry: false
+    command: npx
+  com.microsoft/azure:
+    name: com.microsoft/azure
+  duckdb:
+    name: duckdb
+    transport: stdio
+    args:
+    - duckdb-mcp
+    registry: false
+    command: uvx
+  huggingface/hf-mcp-server:
+    name: huggingface/hf-mcp-server
+  jupyter:
+    name: jupyter
+    transport: sse
+    registry: false
+    url: http://localhost:8888/api/mcp
+  mlflow:
+    name: mlflow
+    transport: stdio
+    args:
+    - mcp
+    - start-server
+    registry: false
+    command: mlflow
+  wandb:
+    name: wandb
+    transport: sse
+    registry: false
+    url: https://mcp.withwandb.com/mcp

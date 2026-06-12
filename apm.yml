@@ -1,0 +1,84 @@
+name: my-ds-project
+version: 0.1.0
+target:
+  - claude
+dependencies:
+  apm:
+  - git: microsoft/apm
+    path: packages/apm-guide
+    skills:
+    - apm-usage
+  - git: obra/superpowers
+    skills:
+    - brainstorming
+    - dispatching-parallel-agents
+    - executing-plans
+    - finishing-a-development-branch
+    - receiving-code-review
+    - requesting-code-review
+    - subagent-driven-development
+    - systematic-debugging
+    - test-driven-development
+    - using-git-worktrees
+    - using-superpowers
+    - verification-before-completion
+    - writing-plans
+    - writing-skills
+  - git: vercel-labs/skills
+    skills:
+    - find-skills
+  - git: AE-nv/data-ai-agent-best-practices
+    skills:
+    - python-scripts
+    - azure-verified-modules
+  - git: microsoft/azure-skills
+    skills:
+    - azure-prepare
+    - azure-cost
+  - git: sepva/data_science_agent
+    skills:
+    - ds-ab-test
+    - ds-brainstorm
+    - ds-build
+    - ds-cost-tracking
+    - ds-data-quality
+    - ds-data-versioning
+    - ds-deploy
+    - ds-document
+    - ds-eda
+    - ds-evaluate
+    - ds-experiment
+    - ds-experiment-record
+    - ds-explainability
+    - ds-fairness
+    - ds-feature-engineering
+    - ds-goals
+    - ds-hpo
+    - ds-improve
+    - ds-mlops
+    - ds-monitor
+    - ds-research
+    - ds-start
+    - ds-training-serving-parity
+  mcp:
+  - name: wandb
+    registry: false
+    transport: sse
+    url: https://mcp.withwandb.com/mcp
+  - name: jupyter
+    registry: false
+    transport: sse
+    url: http://localhost:8888/api/mcp
+  - name: mlflow
+    registry: false
+    transport: stdio
+    command: mlflow
+    args:
+    - mcp
+    - start-server
+  - name: duckdb
+    registry: false
+    transport: stdio
+    command: uvx
+    args:
+    - duckdb-mcp

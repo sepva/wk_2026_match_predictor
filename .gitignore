@@ -1,0 +1,6 @@
+# Claude
+.claude
+
+# APM dependencies
+apm_modules/
+.apm

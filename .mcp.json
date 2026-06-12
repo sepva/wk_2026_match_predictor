@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "azure": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure/mcp",
+        "server",
+        "start"
+      ]
+    },
+    "hf-mcp-server": {
+      "type": "http",
+      "url": "https://huggingface.co/mcp?login"
+    },
+    "wandb": {
+      "type": "http",
+      "url": "https://mcp.withwandb.com/mcp"
+    },
+    "jupyter": {
+      "type": "http",
+      "url": "http://localhost:8888/api/mcp"
+    },
+    "mlflow": {
+      "type": "stdio",
+      "command": "mlflow",
+      "args": [
+        "mcp",
+        "start-server"
+      ]
+    },
+    "duckdb": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "duckdb-mcp"
+      ]
+    }
+  }
+}
