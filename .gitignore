@@ -4,3 +4,7 @@
 # APM dependencies
 apm_modules/
 .apm
+
+# Environment
+.venv
+.dvc
