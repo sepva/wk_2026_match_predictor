@@ -6,27 +6,50 @@ A machine learning system that predicts match outcomes for the 2026 FIFA World C
 
 ## Business Goal
 
-Beat the Sporza WK-pronostiek competition by predicting match outcomes (win/draw/loss) more accurately than pure FIFA-ranking-based estimates. Secondary goal: demonstrate end-to-end data science skills from exploration to Azure deployment.
+Finish in the top 10 of a 100-person Sporza WK-pronostiek minicompetition by predicting exact match scores (home goals + away goals) for all 104 WK 2026 matches. Primary goal is portfolio value (end-to-end DS showcase); competition placement is the measurable proxy. Tournament has started (June 12, 2026) — using Sporza default picks until the model is ready; remaining group stage + knockout rounds are still predictable.
+
+## Scoring System (Sporza — confirmed from wkpronostiek.sporza.be/rules)
+
+**Group stage (per match, max 10 pts):**
+- 10 pts — exact score (bullseye)
+- 7 pts — wrong score, but correct goal difference (e.g. predict 3-1, result is 2-0)
+- 5 pts — correct winner/draw, but wrong goal difference
+- 1 pt — filled in any prediction (participation point)
+
+**Knockout rounds (from round of 16, cumulative per match):**
+- +10 pts — correct advancing team (counts even if decided by penalties)
+- +6 pts — exact score after 90 or 120 min
+- +4 pts — correct advancing team + correct goal difference bonus
+- +1 pts - filled in any prediction (participation point)
+
+**Implication for modeling:** exact score prediction is the highest-value target. Goal difference matters more than individual goal counts. The right formulation: predict (λ_home, λ_away) as Poisson rates → derive score distribution → submit score that maximises expected Sporza points. A pure win/draw/loss classifier leaves points on the table.
 
 ## Success Metrics
 
-- Business metric: Finish higher in the Sporza WK-pronostiek than a naive FIFA-ranking baseline
-- Technical proxy: Brier score / log loss on match outcome probabilities (win/draw/loss)
-- Baseline: FIFA ranking-based probability assignment (higher-ranked team wins with fixed probability)
-- Success threshold: Outperform random guessing; aspirational — approach betting odds accuracy
+- Business metric: Top 10 finish in the 100-person minicompetition (current baseline: Sporza default / FIFA-ranking autofill)
+- Technical proxy (group stage): Mean Sporza points per match on a held-out validation set of historical WC matches (max 10 pts/match); secondary — Brier score on win/draw/loss probabilities
+- Baseline: Sporza "safe" autofill (FIFA-ranking-based) — correct result most of the time → ~5 pts/match average; rarely exact score
+- Success threshold: Beat the FIFA-ranking autofill in mean pts/match on validation data (floor); aspirational — approach 7+ pts/match average (goal difference accuracy)
 
 ## Constraints
 
-- Timeline: 2026 World Cup group stage starts June 2026 — model must be ready before tournament kick-off
+- Timeline: Tournament started June 12, 2026 — group stage in progress; predictions updateable until each match kicks off; model needed ASAP for remaining matches
 - Budget/compute: Personal project; start local, scale to Azure as needed (cost-conscious)
 - Compliance/privacy: No personal data; public datasets only; no proprietary data sources
-- Operational: Predictions needed before each match day; low-latency serving not required
+- Operational: Predictions needed before each match day; low-latency serving not required; manual submission to Sporza UI acceptable
+
+## Non-Goals
+
+- Real-time data pipeline or automated submission
+- Predicting results for already-played matches
+- Optimizing for the full 200,000-participant global leaderboard (only the 100-person group matters)
 
 ## Data Sources
 
-- Available now: None confirmed — exploration phase
-- Planned: Historical international match results, FIFA world rankings, player stats (transfermarkt, SofaScore, etc.), ELO ratings, tournament history, potentially historical betting odds
-- Risks: Data quality and coverage for smaller nations; player availability / injury data freshness; no guarantee of pre-tournament squad data
+- Available now: None confirmed — EDA phase
+- Planned: Historical international match results, FIFA world rankings, ELO ratings (club560/eloratings.net), tournament history, historical betting odds (as calibration reference)
+- Optional enrichment: player stats (Transfermarkt, SofaScore), injury/squad availability data
+- Risks: Data freshness for in-tournament squad state; coverage gaps for smaller nations; no guarantee of pre-match lineup data in time for submission
 
 ## ML Modality
 
