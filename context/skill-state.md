@@ -11,7 +11,8 @@
 | 2026-06-12 | `/ds-eda` (re-run) | `reports/eda-2026-06-12.md` | Notebooks 01–05 executed (notebook 06 SofIFA deferred — 5.2 GB file); 8 red flags found: team name harmonization (9 WC teams missing from ELO by name), FIFA rankings stale (722 days), SPI discontinued, Transfermarkt valuations stale (906 days) + 37% missing market values, PataterieData overlap unverified, 70 missing score rows |
 | 2026-06-12 | `/ds-data-quality` | `reports/data-quality-2026-06-12.md` | 8 red flags resolved: full name harmonization table built (ELO \xa0 fix, 9 ELO mismatches, 5 TM mismatches), 2 MJ duplicates identified, Moldova ELO=0 flagged, 70 null scores confirmed as future fixtures; TM coverage audit complete; 0 deferred |
 | 2026-06-13 | `/ds-feature-engineering` | `reports/feature-engineering-2026-06-13.md`, `src/features/`, `data/interim/train_features.parquet`, `data/interim/wc2026_features.parquet` | 16 features created (ELO at-date, rolling form 5-match, log squad MV, tournament weight, is_neutral); training table 14,681 rows 2010+; WC2026 table 72 fixtures, 0% nulls; sklearn Pipeline scaffolded; Poisson sanity check passed (Mexico 2.04–0.64 South Africa, actual 2–0) |
-| 2026-06-13 | `/ds-experiment` | `data/processed/train_fold_*.parquet`, `data/processed/eval_fold_*.parquet`, `data/processed/eval_pooled.parquet`, `data/processed/split_manifest.json`, `notebooks/08–11`, `research/experiment-results-2026-06-13.md`, `research/experiment-log.md`, `src/evaluation/sporza.py` | LOTO-CV (4×64=256 eval matches); autofill empirically measured at 4.14 pts/match (not assumed 5.0); random 2.94, ELO-only 3.96, Poisson GLM 4.34 [3.93–4.74]; GLM leads but CIs overlap autofill |
+| 2026-06-13 | `/ds-experiment` | `data/processed/train_fold_*.parquet`, `data/processed/eval_fold_*.parquet`, `data/processed/eval_pooled.parquet`, `data/processed/split_manifest.json`, `notebooks/models/08–11`, `research/experiment-results-2026-06-13.md`, `research/experiment-log.md`, `src/evaluation/sporza.py` | LOTO-CV (4×64=256 eval matches); autofill empirically measured at 4.14 pts/match (not assumed 5.0); random 2.94, ELO-only 3.96, Poisson GLM 4.34 [3.93–4.74]; GLM leads but CIs overlap autofill |
+| 2026-06-13 | manual | `notebooks/models/12_dixon_coles.ipynb`, `research/experiment-results-2026-06-13.md` (updated) | Dixon-Coles ρ correction on top of GLM λs: 4.328 [3.926–4.734] vs GLM 4.336 — negligible difference. Per-fold ρ values are small negative (−0.02 to −0.04); ρ-only correction does not open gap vs autofill. Notebooks reorganised into `notebooks/models/`. |
 
 ## Artifact index
 
@@ -44,15 +45,16 @@
 | train/val/test splits | `data/processed/train.parquet`, `data/processed/val.parquet`, `data/processed/test.parquet` | `/ds-experiment` | 2026-06-13 |
 | split manifest | `data/processed/split_manifest.json` | `/ds-experiment` | 2026-06-13 |
 | Sporza scoring utility | `src/evaluation/sporza.py` | `/ds-experiment` | 2026-06-13 |
-| split notebook | `notebooks/08_train_test_split.ipynb` | `/ds-experiment` | 2026-06-13 |
-| random baseline notebook | `notebooks/09_baseline_random.ipynb` | `/ds-experiment` | 2026-06-13 |
-| ELO-only baseline notebook | `notebooks/10_baseline_elo_only.ipynb` | `/ds-experiment` | 2026-06-13 |
-| Poisson GLM baseline notebook | `notebooks/11_baseline_poisson_glm.ipynb` | `/ds-experiment` | 2026-06-13 |
+| split notebook | `notebooks/models/08_train_test_split.ipynb` | `/ds-experiment` | 2026-06-13 |
+| random baseline notebook | `notebooks/models/09_baseline_random.ipynb` | `/ds-experiment` | 2026-06-13 |
+| ELO-only baseline notebook | `notebooks/models/10_baseline_elo_only.ipynb` | `/ds-experiment` | 2026-06-13 |
+| Poisson GLM baseline notebook | `notebooks/models/11_baseline_poisson_glm.ipynb` | `/ds-experiment` | 2026-06-13 |
+| Dixon-Coles notebook | `notebooks/models/12_dixon_coles.ipynb` | manual | 2026-06-13 |
 | experiment results report | `research/experiment-results-2026-06-13.md` | `/ds-experiment` | 2026-06-13 |
 | experiment log | `research/experiment-log.md` | `/ds-experiment` | 2026-06-13 |
 
 ## Recommended next steps
 
-Last run: `/ds-experiment` on 2026-06-13.
-Suggested next: `/ds-build` — implement Dixon-Coles with time decay (via `penaltyblog`) on the same val/test split; expected to beat Poisson GLM by boosting draw probability and exact 1-0/0-1 accuracy via the ρ correction.
-Alternatives: `/ds-hpo` if you want to tune the existing Poisson GLM hyperparameters first, `/ds-improve` if you want to add feature enrichment (squad values, form) before advancing to Dixon-Coles.
+Last run: Dixon-Coles ρ experiment on 2026-06-13.
+Suggested next: **full Dixon-Coles** — fit team-specific attack (αᵢ) and defence (δⱼ) parameters via MLE rather than applying ρ on top of GLM predictions. This is the original DC formulation and captures team-level heterogeneity the GLM cannot. Alternatively, `/ds-improve` to add richer features (xG, squad strength, head-to-head) to the existing GLM before switching model family.
+Alternatives: `/ds-hpo` to tune GLM regularisation strength; `/ds-feature-engineering` re-run to incorporate Transfermarkt squad values (currently unused in the GLM).
