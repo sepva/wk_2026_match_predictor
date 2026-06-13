@@ -13,6 +13,7 @@
 | 2026-06-13 | `/ds-feature-engineering` | `reports/feature-engineering-2026-06-13.md`, `src/features/`, `data/interim/train_features.parquet`, `data/interim/wc2026_features.parquet` | 16 features created (ELO at-date, rolling form 5-match, log squad MV, tournament weight, is_neutral); training table 14,681 rows 2010+; WC2026 table 72 fixtures, 0% nulls; sklearn Pipeline scaffolded; Poisson sanity check passed (Mexico 2.04–0.64 South Africa, actual 2–0) |
 | 2026-06-13 | `/ds-experiment` | `data/processed/train_fold_*.parquet`, `data/processed/eval_fold_*.parquet`, `data/processed/eval_pooled.parquet`, `data/processed/split_manifest.json`, `notebooks/models/08–11`, `research/experiment-results-2026-06-13.md`, `research/experiment-log.md`, `src/evaluation/sporza.py` | LOTO-CV (4×64=256 eval matches); autofill empirically measured at 4.14 pts/match (not assumed 5.0); random 2.94, ELO-only 3.96, Poisson GLM 4.34 [3.93–4.74]; GLM leads but CIs overlap autofill |
 | 2026-06-13 | manual | `notebooks/models/12_dixon_coles.ipynb`, `research/experiment-results-2026-06-13.md` (updated) | Dixon-Coles ρ correction on top of GLM λs: 4.328 [3.926–4.734] vs GLM 4.336 — negligible difference. Per-fold ρ values are small negative (−0.02 to −0.04); ρ-only correction does not open gap vs autofill. Notebooks reorganised into `notebooks/models/`. |
+| 2026-06-13 | `/ds-experiment` | `notebooks/models/13_dixon_coles_full_mle.ipynb`, `research/experiment-results-2026-06-13.md` (updated) | Full Dixon-Coles MLE (per-team αᵢ/δⱼ via L-BFGS-B, time decay φ=0.003): **3.762 [3.383–4.141]** — worse than autofill (4.137). WC2022 fold collapses to 2.922 pts. Root cause: overfitting on sparse folds (219 rows/132 teams for 2010); minnow teams corrupt defence estimates. MLflow upgraded to 3.x (mlflow.db SQLite). |
 
 ## Artifact index
 
@@ -50,11 +51,14 @@
 | ELO-only baseline notebook | `notebooks/models/10_baseline_elo_only.ipynb` | `/ds-experiment` | 2026-06-13 |
 | Poisson GLM baseline notebook | `notebooks/models/11_baseline_poisson_glm.ipynb` | `/ds-experiment` | 2026-06-13 |
 | Dixon-Coles notebook | `notebooks/models/12_dixon_coles.ipynb` | manual | 2026-06-13 |
+| Dixon-Coles full MLE notebook | `notebooks/models/13_dixon_coles_full_mle.ipynb` | `/ds-experiment` | 2026-06-13 |
 | experiment results report | `research/experiment-results-2026-06-13.md` | `/ds-experiment` | 2026-06-13 |
 | experiment log | `research/experiment-log.md` | `/ds-experiment` | 2026-06-13 |
 
 ## Recommended next steps
 
-Last run: Dixon-Coles ρ experiment on 2026-06-13.
-Suggested next: **full Dixon-Coles** — fit team-specific attack (αᵢ) and defence (δⱼ) parameters via MLE rather than applying ρ on top of GLM predictions. This is the original DC formulation and captures team-level heterogeneity the GLM cannot. Alternatively, `/ds-improve` to add richer features (xG, squad strength, head-to-head) to the existing GLM before switching model family.
-Alternatives: `/ds-hpo` to tune GLM regularisation strength; `/ds-feature-engineering` re-run to incorporate Transfermarkt squad values (currently unused in the GLM).
+Last run: Full Dixon-Coles MLE experiment on 2026-06-13.
+Suggested next: **regularised/penalised GLM or feature enrichment** — full DC MLE overfit badly; the Poisson GLM is still the best model. Two viable paths:
+1. **`/ds-feature-engineering` re-run** — add Transfermarkt squad values (currently unused), head-to-head features, or tournament-specific indicators to the GLM. This is the lowest-risk path.
+2. **`/ds-hpo`** — tune GLM regularisation (alpha) and explore interaction terms within the existing feature set.
+Alternatives: Regularised Dixon-Coles (L2 shrinkage on per-team params) to fix the overfitting identified in notebook 13 — but this requires custom implementation and the benefit over a well-tuned GLM is unclear.
