@@ -18,10 +18,13 @@
 | Random (Poisson marginal) | 2.936 | [2.869, 3.004] | 2.949 | True floor |
 | ELO-only (zero params) | 3.961 | [3.582, 4.352] | 4.266 | No training; pure ELO win-prob → floor(λ) |
 | **Poisson GLM** (ELO + form) | **4.336** | [3.930, 4.742] | 3.766 | Best LOTO-CV; optimal Sporza score prediction |
+| Dixon-Coles (ρ on GLM λs) | 4.328 | [3.926, 4.734] | 3.844 | ρ small negative (−0.02 to −0.04); negligible gain over GLM |
 
-> **The Poisson GLM is the strongest model on LOTO-CV but its CI overlaps the autofill baseline.**
-> 4.336 vs 4.137 is a +0.20 pts/match gap, not yet statistically conclusive at 95% confidence.
-> The WC 2022 result (3.77) is weaker, suggesting variance across tournaments is still high.
+> **The Poisson GLM remains the strongest model; Dixon-Coles adds no meaningful improvement.**
+> DC 4.328 vs GLM 4.336 is −0.008 pts/match — within noise. The ρ correction did not deliver the
+> expected +0.3–0.5 pts gain because the per-fold ρ values are very small, meaning the training data
+> does not show a strong systematic excess/deficit in low-score outcomes relative to independent Poisson.
+> Both models beat autofill (4.137) by ~+0.20 pts but the gap is not yet statistically conclusive.
 
 ## Key corrections vs prior run
 
@@ -43,14 +46,19 @@
 
 ## Gap analysis
 
-The Poisson GLM is +0.20 pts/match above autofill (not yet significant). Two levers most likely to open the gap:
+The Poisson GLM is +0.20 pts/match above autofill (not yet significant). Dixon-Coles did not widen this gap — ρ values are too small to matter.
 
-1. **Dixon-Coles ρ correction** — boosts low-score prediction accuracy (0-0, 1-0, 0-1). These are the exact scores where Sporza pays 10 pts. Expect +0.3–0.5 pts/match from ρ alone.
+Why ρ was small: the GLM already absorbs mean goal rates well; the residual correlation between home and away goals in WC data is not large enough for ρ to make a material difference.
+
+Remaining levers most likely to open the gap:
+
+1. **Full Dixon-Coles** (team-specific attack/defence parameters, not just ρ on GLM λs) — fitting αᵢ/δⱼ per team via MLE rather than using a GLM with aggregate features. This is the original Dixon-Coles formulation and captures team-level heterogeneity the GLM cannot.
 2. **WC 2010 training data starvation** — the 2010 fold only has 219 training rows (vs 11,106 for 2022). The model likely has high variance there. Using all-tournament training (including 2022 for inference) will help.
+3. **Better features** — current form features are simple win-rate/goal averages; xG, head-to-head, or squad strength (Transfermarkt/SPI) may add signal.
 
 ## Winner (for this round)
 
-**Poisson GLM** — highest LOTO-CV mean. Proceed to Dixon-Coles.
+**Poisson GLM** — highest LOTO-CV mean. Dixon-Coles ρ-only is not an improvement.
 
 ## MLflow run IDs (LOTO-CV runs)
 
@@ -59,3 +67,4 @@ The Poisson GLM is +0.20 pts/match above autofill (not yet significant). Two lev
 | random_poisson | see MLflow `wk2026-tabular-2026-06-13` run `random_poisson_loto` |
 | elo_only | `elo_only_loto` |
 | poisson_glm | `poisson_glm_loto` |
+| dixon_coles | `e30c2f2acf8448a08f218b7aeb6b5298` |
