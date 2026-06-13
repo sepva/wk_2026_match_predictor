@@ -1,0 +1,5 @@
+outs:
+- md5: ec120bf6a07e8b603f1a700641cde412
+  size: 166477
+  hash: md5
+  path: train_fold_2018.parquet

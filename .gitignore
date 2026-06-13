@@ -15,3 +15,6 @@ __pycache__/
 # DVC — ignore cache and tmp but track config and .dvc pointer files
 .dvc/cache
 .dvc/tmp
+
+# MLflow
+mlruns/

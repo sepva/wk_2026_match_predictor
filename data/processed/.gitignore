@@ -1,0 +1,11 @@
+/train.parquet
+/eval_pooled.parquet
+/split_manifest.json
+/train_fold_2010.parquet
+/train_fold_2014.parquet
+/train_fold_2018.parquet
+/train_fold_2022.parquet
+/eval_fold_2010.parquet
+/eval_fold_2014.parquet
+/eval_fold_2018.parquet
+/eval_fold_2022.parquet

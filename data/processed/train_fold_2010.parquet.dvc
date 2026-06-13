@@ -1,0 +1,5 @@
+outs:
+- md5: c2a72560d50fd8b13e88533e1b95704e
+  size: 22621
+  hash: md5
+  path: train_fold_2010.parquet

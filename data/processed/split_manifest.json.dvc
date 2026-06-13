@@ -1,0 +1,5 @@
+outs:
+- md5: 098b9f087427dc97e2e616ee5e1bd9b6
+  size: 1032
+  hash: md5
+  path: split_manifest.json
