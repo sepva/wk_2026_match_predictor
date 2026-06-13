@@ -1,0 +1,5 @@
+outs:
+- md5: efc7c2dace081408da3b02277586b1cc
+  size: 20112
+  hash: md5
+  path: wc2026_features.parquet

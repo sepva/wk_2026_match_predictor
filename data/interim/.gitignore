@@ -3,3 +3,5 @@
 /elo_wc2026.parquet
 /squad_values.parquet
 /wc2026_fixtures.parquet
+/train_features.parquet
+/wc2026_features.parquet

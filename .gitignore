@@ -8,6 +8,10 @@ apm_modules/
 # Environment
 .venv
 
+# Python
+__pycache__/
+*.pyc
+
 # DVC — ignore cache and tmp but track config and .dvc pointer files
 .dvc/cache
 .dvc/tmp
