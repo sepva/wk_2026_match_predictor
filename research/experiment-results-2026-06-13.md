@@ -19,12 +19,14 @@
 | ELO-only (zero params) | 3.961 | [3.582, 4.352] | 4.266 | No training; pure ELO win-prob → floor(λ) |
 | **Poisson GLM** (ELO + form) | **4.336** | [3.930, 4.742] | 3.766 | Best LOTO-CV; optimal Sporza score prediction |
 | Dixon-Coles (ρ on GLM λs) | 4.328 | [3.926, 4.734] | 3.844 | ρ small negative (−0.02 to −0.04); negligible gain over GLM |
+| Dixon-Coles full MLE (αᵢ/δⱼ per team) | 3.762 | [3.383, 4.141] | 2.922 | **Worse than autofill**; severe overfitting on sparse folds |
 
-> **The Poisson GLM remains the strongest model; Dixon-Coles adds no meaningful improvement.**
-> DC 4.328 vs GLM 4.336 is −0.008 pts/match — within noise. The ρ correction did not deliver the
-> expected +0.3–0.5 pts gain because the per-fold ρ values are very small, meaning the training data
-> does not show a strong systematic excess/deficit in low-score outcomes relative to independent Poisson.
-> Both models beat autofill (4.137) by ~+0.20 pts but the gap is not yet statistically conclusive.
+> **The Poisson GLM remains the strongest model; full DC MLE is a step backwards.**
+> DC MLE 3.762 vs GLM 4.336 is −0.574 pts/match. The per-team parameters overfit on sparse folds
+> (only 219 training matches for 2010, 132 teams) — minnow teams (Turks and Caicos, Brunei) dominate
+> the defence ranking because they concede rarely against other minnows, then drag predictions for
+> WC teams badly wrong. WC 2022 fold collapses to 2.922 pts (below random floor at 2.936).
+> Both GLM variants beat autofill (4.137) by ~+0.20 pts but the gap is not yet statistically conclusive.
 
 ## Key corrections vs prior run
 
@@ -52,9 +54,10 @@ Why ρ was small: the GLM already absorbs mean goal rates well; the residual cor
 
 Remaining levers most likely to open the gap:
 
-1. **Full Dixon-Coles** (team-specific attack/defence parameters, not just ρ on GLM λs) — fitting αᵢ/δⱼ per team via MLE rather than using a GLM with aggregate features. This is the original Dixon-Coles formulation and captures team-level heterogeneity the GLM cannot.
-2. **WC 2010 training data starvation** — the 2010 fold only has 219 training rows (vs 11,106 for 2022). The model likely has high variance there. Using all-tournament training (including 2022 for inference) will help.
-3. **Better features** — current form features are simple win-rate/goal averages; xG, head-to-head, or squad strength (Transfermarkt/SPI) may add signal.
+1. ~~**Full Dixon-Coles** (team-specific attack/defence parameters)~~ — **tried and failed** (notebook 13). Per-team MLE overfits severely on sparse data; minnow teams corrupt the defence estimates. The GLM's aggregate features (ELO, form) are better regularisers than raw per-team parameters without explicit shrinkage.
+2. **Regularised / hierarchical Dixon-Coles** — fit per-team parameters with L2 shrinkage (or a Bayesian prior towards the mean). This is the correct fix for the overfitting problem identified in notebook 13.
+3. **WC 2010 training data starvation** — the 2010 fold only has 219 training rows (vs 11,106 for 2022). The model likely has high variance there. Using all-tournament training (including 2022 for inference) will help.
+4. **Better features** — current form features are simple win-rate/goal averages; xG, head-to-head, or squad strength (Transfermarkt/SPI) may add signal.
 
 ## Winner (for this round)
 
