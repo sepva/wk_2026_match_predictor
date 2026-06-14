@@ -20,12 +20,16 @@
 | **Poisson GLM** (ELO + form) | **4.336** | [3.930, 4.742] | 3.766 | Best LOTO-CV; optimal Sporza score prediction |
 | Dixon-Coles (ρ on GLM λs) | 4.328 | [3.926, 4.734] | 3.844 | ρ small negative (−0.02 to −0.04); negligible gain over GLM |
 | Dixon-Coles full MLE (αᵢ/δⱼ per team) | 3.762 | [3.383, 4.141] | 2.922 | **Worse than autofill**; severe overfitting on sparse folds |
+| **Bayesian hierarchical Poisson** (ELO hyperpriors) | **4.270** | [3.887, 4.660] | 3.719 | Fixed sparse-fold collapse (2010: 4.39 vs DC MLE's 2.92); −0.066 vs GLM |
 
-> **The Poisson GLM remains the strongest model; full DC MLE is a step backwards.**
+> **The Poisson GLM remains the strongest model; full DC MLE is a step backwards; Bayesian hierarchical model is between the two.**
 > DC MLE 3.762 vs GLM 4.336 is −0.574 pts/match. The per-team parameters overfit on sparse folds
 > (only 219 training matches for 2010, 132 teams) — minnow teams (Turks and Caicos, Brunei) dominate
 > the defence ranking because they concede rarely against other minnows, then drag predictions for
 > WC teams badly wrong. WC 2022 fold collapses to 2.922 pts (below random floor at 2.936).
+> The Bayesian hierarchical model (Experiment A) fixes the sparse-fold collapse (2010: 4.39 pts)
+> but still lands 0.066 pts below the GLM pooled mean — the model loses the form features that
+> drive GLM's advantage and the ELO-based hyperprior can't fully compensate.
 > Both GLM variants beat autofill (4.137) by ~+0.20 pts but the gap is not yet statistically conclusive.
 
 ## Key corrections vs prior run

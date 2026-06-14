@@ -14,6 +14,8 @@
 | 2026-06-13 | `/ds-experiment` | `data/processed/train_fold_*.parquet`, `data/processed/eval_fold_*.parquet`, `data/processed/eval_pooled.parquet`, `data/processed/split_manifest.json`, `notebooks/models/08–11`, `research/experiment-results-2026-06-13.md`, `research/experiment-log.md`, `src/evaluation/sporza.py` | LOTO-CV (4×64=256 eval matches); autofill empirically measured at 4.14 pts/match (not assumed 5.0); random 2.94, ELO-only 3.96, Poisson GLM 4.34 [3.93–4.74]; GLM leads but CIs overlap autofill |
 | 2026-06-13 | manual | `notebooks/models/12_dixon_coles.ipynb`, `research/experiment-results-2026-06-13.md` (updated) | Dixon-Coles ρ correction on top of GLM λs: 4.328 [3.926–4.734] vs GLM 4.336 — negligible difference. Per-fold ρ values are small negative (−0.02 to −0.04); ρ-only correction does not open gap vs autofill. Notebooks reorganised into `notebooks/models/`. |
 | 2026-06-13 | `/ds-experiment` | `notebooks/models/13_dixon_coles_full_mle.ipynb`, `research/experiment-results-2026-06-13.md` (updated) | Full Dixon-Coles MLE (per-team αᵢ/δⱼ via L-BFGS-B, time decay φ=0.003): **3.762 [3.383–4.141]** — worse than autofill (4.137). WC2022 fold collapses to 2.922 pts. Root cause: overfitting on sparse folds (219 rows/132 teams for 2010); minnow teams corrupt defence estimates. MLflow upgraded to 3.x (mlflow.db SQLite). |
+| 2026-06-13 | `/ds-research` | `research/method-survey-2026-06-13.md`, `research/approach-shortlist-2026-06-13.md` | Phase 2 research completed: Bayesian hierarchical Poisson with ELO hyperpriors identified as primary fix for per-team overfitting; regularised GLM (L2 team dummies) recommended as fast first experiment; pi-ratings and squad age as secondary features; LLMs and bivariate Poisson deprioritised |
+| 2026-06-13 | `/ds-experiment` | `notebooks/models/14_bayesian_hierarchical_poisson.ipynb`, `research/experiment-results-2026-06-13.md` (updated), `research/experiment-log.md` (updated) | Experiment A — Bayesian hierarchical Poisson (PyMC 6, ELO hyperpriors, NUTS 1k draws, LOTO-CV): **4.270 [3.887, 4.660]** — beats autofill (+0.13) but −0.066 vs GLM. Sparse 2010 fold fixed (4.39 vs DC MLE 2.92). GLM remains winner; model lacks form features. |
 
 ## Artifact index
 
@@ -54,11 +56,12 @@
 | Dixon-Coles full MLE notebook | `notebooks/models/13_dixon_coles_full_mle.ipynb` | `/ds-experiment` | 2026-06-13 |
 | experiment results report | `research/experiment-results-2026-06-13.md` | `/ds-experiment` | 2026-06-13 |
 | experiment log | `research/experiment-log.md` | `/ds-experiment` | 2026-06-13 |
+| Bayesian hierarchical Poisson notebook | `notebooks/models/14_bayesian_hierarchical_poisson.ipynb` | `/ds-experiment` | 2026-06-13 |
+| method survey (Phase 2) | `research/method-survey-2026-06-13.md` | `/ds-research` | 2026-06-13 |
+| approach shortlist (Phase 2) | `research/approach-shortlist-2026-06-13.md` | `/ds-research` | 2026-06-13 |
 
 ## Recommended next steps
 
-Last run: Full Dixon-Coles MLE experiment on 2026-06-13.
-Suggested next: **regularised/penalised GLM or feature enrichment** — full DC MLE overfit badly; the Poisson GLM is still the best model. Two viable paths:
-1. **`/ds-feature-engineering` re-run** — add Transfermarkt squad values (currently unused), head-to-head features, or tournament-specific indicators to the GLM. This is the lowest-risk path.
-2. **`/ds-hpo`** — tune GLM regularisation (alpha) and explore interaction terms within the existing feature set.
-Alternatives: Regularised Dixon-Coles (L2 shrinkage on per-team params) to fix the overfitting identified in notebook 13 — but this requires custom implementation and the benefit over a well-tuned GLM is unclear.
+Last run: `/ds-experiment` on 2026-06-13 (Experiment A — Bayesian hierarchical Poisson).
+Suggested next: `/ds-experiment` — Experiment B (regularised GLM with L2-penalised team dummies): `PoissonRegressor(alpha=...) + OneHotEncoder` for home/away team, cross-validate alpha on LOTO-CV. Fast (2–4h), may recover form-feature advantage while adding team-level signal.
+Alternatives: Experiment C (`PiRatings` replacing ELO diff in GLM, 1h drop-in); `/ds-hpo` to tune GLM alpha and feature weights without adding team dummies.
