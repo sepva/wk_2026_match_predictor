@@ -24,8 +24,10 @@
 | Reg GLM + team dummies (Exp B) | 4.379 | [3.969, 4.781] | +0.242 | +0.043 | 2014 fold regression from near-zero alpha |
 | Reg GLM + team dummies, alpha≥0.1 (Exp B-fixed) | 4.344 | [3.945, 4.750] | +0.207 | +0.008 | Fixes 2014 but caps signal in larger folds |
 | **Pi-Ratings GLM (Exp C)** | **4.375** | [3.977, 4.781] | **+0.238** | **+0.039** | Drop-in ELO replacement; good 2014/2018; 2022 regression |
+| **Hybrid ELO+Pi GLM (Exp D)** | **4.387** | [3.984, 4.789] | **+0.250** | **+0.051** | Best model; 3/4 folds improve; stable across all folds |
+| Live-update CV (Exp E) | 4.324 | [3.922, 4.719] | +0.187 | +0.012 | Static 4.281 vs live 4.324; +0.043 delta within noise |
 
-> **Poisson GLM remains the most stable model. No experiment has opened a statistically conclusive gap above it.** Exp B and Exp C both nudge the mean slightly higher (+0.043, +0.039) but with overlapping CIs. The WC 2022 fold is consistently the weakest across all approaches (3.4–3.9 pts vs 4.1–4.9 for other folds).
+> **Hybrid ELO+Pi GLM (Exp D) is the current best model at 4.387 pts/match.** No experiment has opened a statistically conclusive gap above the Poisson GLM baseline, but Exp D is the most consistent across all 4 folds. The WC 2022 fold is consistently the weakest across all approaches (3.4–3.9 pts vs 4.1–5.0 for other folds). The live-update mechanism (Exp E) provides no reliable scoring uplift — safe to keep for correctness but not a systematic improvement.
 
 ---
 
@@ -83,6 +85,29 @@ Likely cause of 2022 regression: pi-ratings weight recent goal-margin performanc
 **Decision:** Pi-ratings do not reliably beat the ELO GLM. The 2022 regression is too large to accept (+0.039 pooled masks a −0.297 hit on the most recent WC). For actual WC 2026 predictions, reverting to ELO GLM is safer.
 
 **One possible next step:** Hybrid feature — use both `elo_diff` AND `pi_diff` as features in the same GLM, letting the model learn the weight. This costs nothing (same pipeline, one extra feature) and may capture the best of both signals without fully committing to pi-ratings.
+
+---
+
+---
+
+## Experiment E: Live-Update CV Test
+
+Tests whether the per-matchday feature update mechanism in the generation notebook (pi-ratings and form recomputed from played WC results) improves LOTO-CV score vs. static pre-tournament snapshots.
+
+### Per-fold results
+
+| Fold | Static | Live-update | Delta |
+|------|:------:|:-----------:|:-----:|
+| WC 2010 | 4.156 | 4.156 | +0.000 |
+| WC 2014 | 4.562 | 4.969 | +0.406 |
+| WC 2018 | 4.656 | 4.594 | −0.062 |
+| WC 2022 | 3.750 | 3.578 | −0.172 |
+| **Pooled** | **4.281** | **4.324** | **+0.043** |
+
+**95% CI static:** [3.887, 4.680]  
+**95% CI live-update:** [3.922, 4.719]
+
+**Conclusion:** The live-update mechanism is approximately neutral (+0.043 pts/match, CIs fully overlap). WC 2014 benefits meaningfully (+0.406) but WC 2022 declines (−0.172). The effect does not replicate consistently across folds — noise at 64 matches per tournament. The mechanism is correct to keep in the generation notebook (ensures features reflect current tournament state) but should not be expected to systematically improve predictions.
 
 ---
 

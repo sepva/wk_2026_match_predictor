@@ -2,6 +2,20 @@
 
 ---
 
+## Experiment — 2026-06-14 (Experiment E — Live-Update CV Test)
+
+**Hypothesis**: The generation notebook updates pi-ratings and form features per matchday using played WC results. Does this mechanism, when simulated in LOTO-CV, improve scores vs. using static pre-tournament snapshots?
+
+**Approaches tested**: For each CV fold (WC 2010/2014/2018/2022), predictions are made matchday-by-matchday. Before each matchday, pi-ratings and form are recomputed from all matches up to (but not including) that date, including WC results already played in that fold. Model is retrained on the pre-tournament training fold with updated features.
+
+**Result**: **Static 4.281 [3.887, 4.680] vs Live-update 4.324 [3.922, 4.719] (+0.043)**. WC 2014 benefits (+0.406) but WC 2018 (−0.062) and WC 2022 (−0.172) decline. Effect is inconsistent.
+
+**Decision**: Mechanism is approximately neutral — not harmful, but provides no systematic uplift. Keep it in the generation notebook for correctness (ensures features reflect current tournament state). The static baseline figure (4.281) differs from Exp D (4.387) because the static run here recomputes form from raw match history rather than using the pre-baked form columns in the train fold parquets — this is the correct method but a slightly different code path than notebook 19.
+
+**Next step**: Investigate WC 2022 fold weakness (3.4–3.9 pts consistently across all experiments); or generate updated WC 2026 predictions with live results.
+
+---
+
 ## Experiment — 2026-06-13
 
 **Hypothesis**: A fitted Poisson model with ELO and form features will outperform both random guessing and a zero-parameter ELO-only predictor; even the simplest trained model should approach the Sporza autofill baseline (~5 pts/match).
