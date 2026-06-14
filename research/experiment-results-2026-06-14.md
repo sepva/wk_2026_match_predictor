@@ -17,11 +17,17 @@
 | **Autofill** (ELO-favourite 1-0 / 1-1) | **4.137** | [3.742, 4.539] | — | −0.199 | Empirical baseline |
 | Random (Poisson marginal) | 2.936 | [2.869, 3.004] | −1.201 | −1.400 | True floor |
 | ELO-only (zero params) | 3.961 | [3.582, 4.352] | −0.176 | −0.375 | No training |
-| **Poisson GLM** (ELO + form) | **4.336** | [3.930, 4.742] | +0.199 | 0.000 | Best overall; current champion |
+| **Poisson GLM** (ELO + form) | **4.336** | [3.930, 4.742] | +0.199 | 0.000 | Best stable model |
 | Dixon-Coles ρ (on GLM λs) | 4.328 | [3.926, 4.734] | +0.191 | −0.008 | ρ negligible |
 | Dixon-Coles full MLE (αᵢ/δⱼ) | 3.762 | [3.383, 4.141] | −0.375 | −0.574 | Worse than autofill; per-team overfitting |
 | Bayesian hierarchical Poisson (Exp A) | 4.270 | [3.887, 4.660] | +0.133 | −0.066 | Fixes sparse-fold; loses form features |
-| **Reg GLM + team dummies (Exp B)** | **4.379** | [3.969, 4.781] | **+0.242** | **+0.043** | New best; team dummies with L2 add marginal signal |
+| Reg GLM + team dummies (Exp B) | 4.379 | [3.969, 4.781] | +0.242 | +0.043 | 2014 fold regression from near-zero alpha |
+| Reg GLM + team dummies, alpha≥0.1 (Exp B-fixed) | 4.344 | [3.945, 4.750] | +0.207 | +0.008 | Fixes 2014 but caps signal in larger folds |
+| **Pi-Ratings GLM (Exp C)** | **4.375** | [3.977, 4.781] | **+0.238** | **+0.039** | Drop-in ELO replacement; good 2014/2018; 2022 regression |
+
+> **Poisson GLM remains the most stable model. No experiment has opened a statistically conclusive gap above it.** Exp B and Exp C both nudge the mean slightly higher (+0.043, +0.039) but with overlapping CIs. The WC 2022 fold is consistently the weakest across all approaches (3.4–3.9 pts vs 4.1–4.9 for other folds).
+
+---
 
 ## Experiment B: Regularised GLM with L2-penalised Team Dummies
 
@@ -35,42 +41,55 @@
 | WC 2022 | 3.859 | 7.8% | 56.2% | 0.001 | +0.093 |
 | **Pooled** | **4.379** | — | — | — | **+0.043** |
 
+### Experiment B-fixed (alpha floor ≥ 0.1)
+
+| Fold | mean_pts | exact | correct | best_alpha | Δ vs B | Δ vs GLM |
+|------|:--------:|:-----:|:-------:|:----------:|:------:|:--------:|
+| WC 2010 | 4.312 | 18.8% | 53.1% | 0.1 | +0.000 | +0.171 |
+| WC 2014 | 4.734 | 17.2% | 62.5% | 0.1 | +0.140 | −0.141 |
+| WC 2018 | 4.562 | 18.8% | 57.8% | 0.1 | −0.188 | +0.000 |
+| WC 2022 | 3.766 | 7.8% | 54.7% | 0.1 | −0.093 | −0.000 |
+| **Pooled** | **4.344** | — | — | — | **−0.035** | **+0.008** |
+
+**Conclusion:** The alpha floor fixed the 2014 regression (+0.140) but cost signal in 2018 (−0.188) and 2022 (−0.093). The inner CV's low-alpha preference on large folds was capturing genuine per-team signal, not just overfitting — only 2014 was a true overfit case. No single alpha value works well across all fold sizes. Team dummies are ruled out as a reliable improvement strategy.
+
+---
+
+## Experiment C: Pi-Ratings GLM
+
+Pi-ratings (penaltyblog `PiRatingSystem`) computed from full match history back to 1990, strictly temporal (no leakage). Replace `elo_home`, `elo_away`, `elo_diff` with `pi_home`, `pi_away`, `pi_diff`. All form features kept identical.
+
+### Per-fold results
+
+| Fold | mean_pts | exact | correct | Δ vs GLM |
+|------|:--------:|:-----:|:-------:|:--------:|
+| WC 2010 | 4.266 | 20.3% | 51.6% | +0.125 |
+| WC 2014 | 4.969 | 18.8% | 64.1% | +0.094 |
+| WC 2018 | 4.797 | 20.3% | 60.9% | +0.235 |
+| WC 2022 | 3.469 | 6.2% | 50.0% | −0.297 |
+| **Pooled** | **4.375** | — | — | **+0.039** |
+
+**95% CI:** [3.977, 4.781]  
+**Permutation test p-value (Pi > ELO GLM):** 0.398 — not significant.
+
 ### Interpretation
 
-**Outcome B: Team dummies ≈ GLM baseline (+0.043 pts, CI overlaps).** The gain is real in 3 of 4
-folds but the large 2014 regression (−0.281) drags the pooled mean. The CI overlap means the
-improvement is not statistically conclusive.
+Pi-ratings outperform ELO in 3 of 4 folds (2010: +0.125, 2014: +0.094, 2018: +0.235) but the WC 2022 fold collapses badly (3.469, −0.297 vs GLM). The 2022 regression is the critical question: is it noise, or does it reveal a systematic pi-ratings weakness?
 
-Key observations:
-- **2010 fold (most sparse, 219 rows/132 teams):** +0.171 pts with alpha=0.1. Heavier regularisation
-  correctly suppresses the team dummies in the sparse setting where the GLM's aggregate features
-  dominate.
-- **2014 fold regression (−0.281):** alpha=0.001 (very low penalty) was selected by inner CV — the
-  model is fitting team-specific patterns on the 2014 training set that generalise poorly to the
-  actual 2014 WC. This is the main failure mode: inner CV selects near-zero regularisation when
-  training data is larger, allowing overfitting.
-- **2018 and 2022:** team dummies help (+0.188, +0.093) with near-zero alpha, suggesting that once
-  enough data exists (~7k+ training rows), team identity adds real signal beyond ELO.
+Likely cause of 2022 regression: pi-ratings weight recent goal-margin performance heavily. In the 2022 cycle, teams may have played differently in qualifying vs WC (defensive tactics, squad rotation), causing the high-pi teams to underperform their rating at the tournament. ELO's recency-insensitive averaging is more robust to this mismatch.
 
-**Root cause of 2014 regression:** The inner CV minimises Poisson deviance (log-likelihood), not
-Sporza score. With 3,900 training rows (2014 fold), the model has enough capacity to memorise
-team-specific λ offsets that minimise training deviance but don't transfer to the WC score
-distribution. A higher alpha floor or Sporza-score-based inner CV would address this.
+**Pre-WC-2022 sanity check on ratings:** Brazil +3.66, Argentina +3.23, Germany +2.59, France +2.46 — sensible ordering.
 
-### Decision
+**Decision:** Pi-ratings do not reliably beat the ELO GLM. The 2022 regression is too large to accept (+0.039 pooled masks a −0.297 hit on the most recent WC). For actual WC 2026 predictions, reverting to ELO GLM is safer.
 
-Team dummies carry **marginal** signal but the regularisation strategy needs fixing before this
-approach is worth pursuing further. Options:
+**One possible next step:** Hybrid feature — use both `elo_diff` AND `pi_diff` as features in the same GLM, letting the model learn the weight. This costs nothing (same pipeline, one extra feature) and may capture the best of both signals without fully committing to pi-ratings.
 
-1. **Add a minimum alpha floor** (e.g. alpha ≥ 0.1 always) to prevent near-zero regularisation in
-   larger folds — this is a 30-minute fix that could recover the 2014 regression.
-2. **Move to Experiment C (pi-ratings)** — a drop-in ELO replacement that adds score-margin signal
-   without the team-dummy overfitting risk.
-3. **Move to Experiment D (squad age)** or **E (Transfermarkt bias correction)** — orthogonal
-   features that don't interact with the team-dummy issue.
+---
 
 ## MLflow run IDs
 
 | Approach | MLflow experiment | Run ID |
 |----------|-------------------|--------|
 | Reg GLM + team dummies (Exp B) | `wk2026-tabular-2026-06-14` | `6ea4089d71e34b93866e0faed0a0fc5d` |
+| Reg GLM + team dummies, alpha≥0.1 (Exp B-fixed) | `wk2026-tabular-2026-06-14` | `7c0aaaee0b824205b6497ca86e21d8c0` |
+| Pi-Ratings GLM (Exp C) | `wk2026-tabular-2026-06-14` | `dd71d64213b24f799f5388bce8bc7587` |

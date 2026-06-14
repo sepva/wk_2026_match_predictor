@@ -17,6 +17,7 @@
 | 2026-06-13 | `/ds-research` | `research/method-survey-2026-06-13.md`, `research/approach-shortlist-2026-06-13.md` | Phase 2 research completed: Bayesian hierarchical Poisson with ELO hyperpriors identified as primary fix for per-team overfitting; regularised GLM (L2 team dummies) recommended as fast first experiment; pi-ratings and squad age as secondary features; LLMs and bivariate Poisson deprioritised |
 | 2026-06-13 | `/ds-experiment` | `notebooks/models/14_bayesian_hierarchical_poisson.ipynb`, `research/experiment-results-2026-06-13.md` (updated), `research/experiment-log.md` (updated) | Experiment A — Bayesian hierarchical Poisson (PyMC 6, ELO hyperpriors, NUTS 1k draws, LOTO-CV): **4.270 [3.887, 4.660]** — beats autofill (+0.13) but −0.066 vs GLM. Sparse 2010 fold fixed (4.39 vs DC MLE 2.92). GLM remains winner; model lacks form features. |
 | 2026-06-14 | `/ds-experiment` | `notebooks/models/15_regularised_glm_team_dummies.ipynb`, `research/experiment-results-2026-06-14.md`, `research/experiment-log.md` (updated) | Experiment B — Regularised GLM + L2 team dummies (PoissonRegressor + OHE, inner 3-fold CV, LOTO-CV): **4.379 [3.969, 4.781]** — new best (+0.043 vs GLM). 2014 fold regression (−0.281) due to inner CV selecting alpha≈0.001; CI overlaps GLM — not conclusive. Team dummies carry marginal signal but regularisation strategy needs alpha floor. |
+| 2026-06-14 | `/ds-experiment` | `notebooks/models/16_regularised_glm_team_dummies_alphafixed.ipynb`, `notebooks/models/17_pi_ratings_glm.ipynb`, `research/experiment-results-2026-06-14.md` (updated), `research/experiment-log.md` (updated) | Exp B-fixed (alpha≥0.1): **4.344 [3.945, 4.750]** — fixes 2014 (+0.140) but costs 2018/2022; +0.008 vs GLM. Team dummies ruled out. Exp C pi-ratings: **4.375 [3.977, 4.781]** — 3/4 folds improve but 2022 collapses (3.469, −0.297); p=0.398. ELO GLM remains best stable model. |
 
 ## Artifact index
 
@@ -61,10 +62,12 @@
 | method survey (Phase 2) | `research/method-survey-2026-06-13.md` | `/ds-research` | 2026-06-13 |
 | approach shortlist (Phase 2) | `research/approach-shortlist-2026-06-13.md` | `/ds-research` | 2026-06-13 |
 | regularised GLM team dummies notebook | `notebooks/models/15_regularised_glm_team_dummies.ipynb` | `/ds-experiment` | 2026-06-14 |
+| regularised GLM team dummies alpha-fixed notebook | `notebooks/models/16_regularised_glm_team_dummies_alphafixed.ipynb` | `/ds-experiment` | 2026-06-14 |
+| pi-ratings GLM notebook | `notebooks/models/17_pi_ratings_glm.ipynb` | `/ds-experiment` | 2026-06-14 |
 | experiment results (2026-06-14) | `research/experiment-results-2026-06-14.md` | `/ds-experiment` | 2026-06-14 |
 
 ## Recommended next steps
 
-Last run: `/ds-experiment` on 2026-06-14 (Experiment B — regularised GLM + team dummies).
-Suggested next: `/ds-experiment` — Experiment B variant: enforce alpha floor ≥ 0.1 in inner CV grid (prevents 2014-fold near-zero overfitting); quick rerun of Experiment B with `ALPHA_GRID = [0.1, 0.5, 1.0, 5.0, 10.0]` to see if the 2014 regression disappears.
-Alternatives: Experiment C (`PiRatings` as ELO drop-in in plain GLM, 1h); `/ds-hpo` for full Optuna sweep on GLM alpha + feature weights.
+Last run: `/ds-experiment` on 2026-06-14 (Exp B-fixed + Exp C pi-ratings).
+Suggested next: `/ds-experiment` — hybrid ELO+pi-ratings GLM: add `pi_diff` as an extra feature alongside `elo_diff` in the plain GLM (one-line change to feature matrix; model learns the weight). OR pivot to `/ds-evaluate` — generate actual WC 2026 group stage predictions using the ELO GLM (current best stable model) before remaining matches kick off.
+Alternatives: Experiment D (squad age feature, `pct_prime_age` from FIFA squad data, 2h); Experiment E (Transfermarkt European bias correction, 1h).

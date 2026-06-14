@@ -32,6 +32,34 @@
 
 ---
 
+## Experiment — 2026-06-14 (Experiment C)
+
+**Hypothesis**: Pi-ratings (score-margin-aware, separate home/away ratings) contain information ELO discards — goal margin and directional home/away performance. Replacing ELO features with pi-ratings in the GLM should improve predictions, especially for teams whose form diverges from ELO's win/loss signal.
+
+**Approaches tested**: Pi-Ratings GLM — penaltyblog `PiRatingSystem` computed from full match history (1990+) strictly temporally; replace `elo_home/away/diff` with `pi_home/away/diff`; all form features identical to GLM. LOTO-CV 4 folds × 64 matches.
+
+**Result**: **4.375 pts/match [3.977, 4.781]** — +0.039 vs ELO GLM. 3 of 4 folds improve (2010: +0.125, 2014: +0.094, 2018: +0.235) but WC 2022 collapses to 3.469 (−0.297). Permutation test p=0.398. Pre-tournament sanity check on 2022 pi-ratings looks sensible (Brazil +3.66, Argentina +3.23). 2022 regression likely from tactical WC divergence from qualifying form.
+
+**Decision**: Pi-ratings do not reliably beat ELO GLM. Pooled gain is marginal and not significant; 2022 regression is too large. ELO GLM remains safer for live WC 2026 predictions. Possible next step: hybrid GLM with both `elo_diff` AND `pi_diff` as features.
+
+**Next step**: `/ds-experiment` — hybrid ELO+pi-ratings GLM (add `pi_diff` as extra feature alongside `elo_diff`); OR Experiment D (squad age feature from FIFA squad data); OR pivot to generating WC 2026 predictions with current best model (ELO GLM).
+
+---
+
+## Experiment — 2026-06-14 (Experiment B-fixed)
+
+**Hypothesis**: Enforcing alpha ≥ 0.1 in Experiment B's inner CV grid will prevent the near-zero regularisation that caused the 2014 fold regression (−0.281).
+
+**Approaches tested**: Same as Experiment B but `ALPHA_GRID = [0.1, 0.5, 1.0, 5.0, 10.0]`. All folds selected alpha=0.1.
+
+**Result**: **4.344 pts/match [3.945, 4.750]** — fixed 2014 fold (+0.140, from 4.594→4.734) but cost signal in 2018 (−0.188, 4.750→4.562) and 2022 (−0.093, 3.859→3.766). Net: +0.008 vs GLM. The inner CV's low-alpha preference on large folds was capturing genuine per-team signal, not noise. No single alpha works across all fold sizes.
+
+**Decision**: Team dummies are ruled out. No alpha value reliably improves all folds. Proceed to other approaches.
+
+**Next step**: Experiment C (pi-ratings) — completed in same session.
+
+---
+
 ## Experiment — 2026-06-14 (Experiment B)
 
 **Hypothesis**: Adding one-hot team identity with L2 regularisation to the Poisson GLM will capture residual per-team signal beyond ELO + form, while preventing the overfitting that killed full DC MLE.
