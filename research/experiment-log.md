@@ -32,6 +32,20 @@
 
 ---
 
+## Experiment — 2026-06-14 (Experiment B)
+
+**Hypothesis**: Adding one-hot team identity with L2 regularisation to the Poisson GLM will capture residual per-team signal beyond ELO + form, while preventing the overfitting that killed full DC MLE.
+
+**Approaches tested**: Regularised GLM with `PoissonRegressor` + `OneHotEncoder` for home_team/away_team; inner 3-fold CV on training set to select alpha from [0.001, 0.01, 0.1, 1.0, 10.0] (scorer: neg_mean_poisson_deviance); LOTO-CV 4 folds × 64 matches.
+
+**Result**: **4.379 pts/match [3.969, 4.781]** — +0.043 pts vs GLM baseline (4.336). Best in 3 of 4 folds. Large 2014 regression (−0.281, alpha=0.001) drags pooled mean. CI overlaps GLM — not statistically conclusive. Inner CV selects near-zero alpha on large folds (2014/2018/2022), allowing team-specific overfitting on training deviance that doesn't transfer to Sporza score.
+
+**Decision**: Team dummies add marginal signal but regularisation strategy needs fixing. The inner CV metric (Poisson deviance) diverges from the objective (Sporza score) when data is abundant and alpha is very small. Options: (a) enforce alpha floor ≥ 0.1; (b) pivot to Experiment C (pi-ratings drop-in).
+
+**Next step**: Experiment C — pi-ratings as ELO replacement in the plain GLM (1-hour drop-in); OR enforce alpha ≥ 0.1 and rerun Experiment B.
+
+---
+
 ## Experiment — 2026-06-13 (run 3 — Experiment A)
 
 **Hypothesis**: A Bayesian hierarchical Poisson model (Baio & Blangiardo 2010) with ELO-informed attack hyperpriors will regularise per-team parameters via shrinkage, fixing the overfitting that killed full DC MLE (3.762 pts) while retaining the team-level signal absent in the covariate-only GLM.

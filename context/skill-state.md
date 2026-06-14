@@ -16,6 +16,7 @@
 | 2026-06-13 | `/ds-experiment` | `notebooks/models/13_dixon_coles_full_mle.ipynb`, `research/experiment-results-2026-06-13.md` (updated) | Full Dixon-Coles MLE (per-team αᵢ/δⱼ via L-BFGS-B, time decay φ=0.003): **3.762 [3.383–4.141]** — worse than autofill (4.137). WC2022 fold collapses to 2.922 pts. Root cause: overfitting on sparse folds (219 rows/132 teams for 2010); minnow teams corrupt defence estimates. MLflow upgraded to 3.x (mlflow.db SQLite). |
 | 2026-06-13 | `/ds-research` | `research/method-survey-2026-06-13.md`, `research/approach-shortlist-2026-06-13.md` | Phase 2 research completed: Bayesian hierarchical Poisson with ELO hyperpriors identified as primary fix for per-team overfitting; regularised GLM (L2 team dummies) recommended as fast first experiment; pi-ratings and squad age as secondary features; LLMs and bivariate Poisson deprioritised |
 | 2026-06-13 | `/ds-experiment` | `notebooks/models/14_bayesian_hierarchical_poisson.ipynb`, `research/experiment-results-2026-06-13.md` (updated), `research/experiment-log.md` (updated) | Experiment A — Bayesian hierarchical Poisson (PyMC 6, ELO hyperpriors, NUTS 1k draws, LOTO-CV): **4.270 [3.887, 4.660]** — beats autofill (+0.13) but −0.066 vs GLM. Sparse 2010 fold fixed (4.39 vs DC MLE 2.92). GLM remains winner; model lacks form features. |
+| 2026-06-14 | `/ds-experiment` | `notebooks/models/15_regularised_glm_team_dummies.ipynb`, `research/experiment-results-2026-06-14.md`, `research/experiment-log.md` (updated) | Experiment B — Regularised GLM + L2 team dummies (PoissonRegressor + OHE, inner 3-fold CV, LOTO-CV): **4.379 [3.969, 4.781]** — new best (+0.043 vs GLM). 2014 fold regression (−0.281) due to inner CV selecting alpha≈0.001; CI overlaps GLM — not conclusive. Team dummies carry marginal signal but regularisation strategy needs alpha floor. |
 
 ## Artifact index
 
@@ -59,9 +60,11 @@
 | Bayesian hierarchical Poisson notebook | `notebooks/models/14_bayesian_hierarchical_poisson.ipynb` | `/ds-experiment` | 2026-06-13 |
 | method survey (Phase 2) | `research/method-survey-2026-06-13.md` | `/ds-research` | 2026-06-13 |
 | approach shortlist (Phase 2) | `research/approach-shortlist-2026-06-13.md` | `/ds-research` | 2026-06-13 |
+| regularised GLM team dummies notebook | `notebooks/models/15_regularised_glm_team_dummies.ipynb` | `/ds-experiment` | 2026-06-14 |
+| experiment results (2026-06-14) | `research/experiment-results-2026-06-14.md` | `/ds-experiment` | 2026-06-14 |
 
 ## Recommended next steps
 
-Last run: `/ds-experiment` on 2026-06-13 (Experiment A — Bayesian hierarchical Poisson).
-Suggested next: `/ds-experiment` — Experiment B (regularised GLM with L2-penalised team dummies): `PoissonRegressor(alpha=...) + OneHotEncoder` for home/away team, cross-validate alpha on LOTO-CV. Fast (2–4h), may recover form-feature advantage while adding team-level signal.
-Alternatives: Experiment C (`PiRatings` replacing ELO diff in GLM, 1h drop-in); `/ds-hpo` to tune GLM alpha and feature weights without adding team dummies.
+Last run: `/ds-experiment` on 2026-06-14 (Experiment B — regularised GLM + team dummies).
+Suggested next: `/ds-experiment` — Experiment B variant: enforce alpha floor ≥ 0.1 in inner CV grid (prevents 2014-fold near-zero overfitting); quick rerun of Experiment B with `ALPHA_GRID = [0.1, 0.5, 1.0, 5.0, 10.0]` to see if the 2014 regression disappears.
+Alternatives: Experiment C (`PiRatings` as ELO drop-in in plain GLM, 1h); `/ds-hpo` for full Optuna sweep on GLM alpha + feature weights.
