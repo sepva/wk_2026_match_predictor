@@ -1,71 +1,81 @@
 date,home_team,away_team,group,tournament,lambda_home,lambda_away,pred_home,pred_away,exp_pts
-2026-06-18,Czech Republic,South Africa,Group A,Matchday 8,1.592,0.914,1,0,4.0252
+2026-06-18,Czech Republic,South Africa,Group A,Matchday 8,1.591,0.914,1,0,4.0252
 2026-06-18,Mexico,South Korea,Group A,Matchday 8,1.572,0.879,1,0,4.0554
-2026-06-24,Czech Republic,Mexico,Group A,Matchday 14,0.864,1.645,0,1,4.1458
+2026-06-24,Czech Republic,Mexico,Group A,Matchday 14,0.863,1.645,0,1,4.1458
 2026-06-24,South Africa,South Korea,Group A,Matchday 14,0.842,1.46,0,1,4.021
-2026-06-12,Canada,Bosnia & Herzegovina,Group B,Matchday 2,1.64,0.744,1,0,4.3415
-2026-06-13,Qatar,Switzerland,Group B,Matchday 3,0.584,2.063,0,1,4.8341
-2026-06-18,Switzerland,Bosnia & Herzegovina,Group B,Matchday 8,1.851,0.754,1,0,4.4679
-2026-06-18,Canada,Qatar,Group B,Matchday 8,2.341,0.547,2,0,5.0159
-2026-06-24,Switzerland,Canada,Group B,Matchday 14,1.358,1.016,1,0,3.6327
-2026-06-24,Bosnia & Herzegovina,Qatar,Group B,Matchday 14,1.511,0.788,1,0,4.1507
-2026-06-13,Brazil,Morocco,Group C,Matchday 3,1.572,1.02,1,0,3.8392
-2026-06-13,Haiti,Scotland,Group C,Matchday 3,0.933,1.432,0,1,3.8453
-2026-06-19,Scotland,Morocco,Group C,Matchday 9,1.089,1.32,0,1,3.4844
-2026-06-19,Brazil,Haiti,Group C,Matchday 9,2.184,0.719,1,0,4.6776
-2026-06-24,Scotland,Brazil,Group C,Matchday 14,0.935,1.633,0,1,4.0127
-2026-06-24,Morocco,Haiti,Group C,Matchday 14,1.823,0.761,1,0,4.4336
-2026-06-12,USA,Paraguay,Group D,Matchday 2,1.108,1.49,0,1,3.6316
-2026-06-13,Australia,Turkey,Group D,Matchday 3,1.033,1.286,0,1,3.5408
-2026-06-19,USA,Australia,Group D,Matchday 9,1.242,1.337,0,1,3.2947
-2026-06-19,Turkey,Paraguay,Group D,Matchday 9,1.289,1.061,1,0,3.4955
-2026-06-25,Turkey,USA,Group D,Matchday 15,1.976,0.86,1,0,4.3806
-2026-06-25,Paraguay,Australia,Group D,Matchday 15,1.429,0.987,1,0,3.7512
-2026-06-14,Germany,Curaçao,Group E,Matchday 4,3.518,0.542,3,0,5.3357
-2026-06-14,Ivory Coast,Ecuador,Group E,Matchday 4,0.911,1.435,0,1,3.8774
+2026-06-18,Switzerland,Bosnia & Herzegovina,Group B,Matchday 8,1.781,0.778,1,0,4.376
+2026-06-18,Canada,Qatar,Group B,Matchday 8,2.223,0.584,2,0,4.8974
+2026-06-24,Switzerland,Canada,Group B,Matchday 14,1.389,1.002,1,0,3.695
+2026-06-24,Bosnia & Herzegovina,Qatar,Group B,Matchday 14,1.509,0.796,1,0,4.1338
+2026-06-19,Scotland,Morocco,Group C,Matchday 9,1.054,1.248,0,1,3.4648
+2026-06-19,Brazil,Haiti,Group C,Matchday 9,2.211,0.706,1,0,4.7032
+2026-06-24,Scotland,Brazil,Group C,Matchday 14,0.934,1.508,0,1,3.9222
+2026-06-24,Morocco,Haiti,Group C,Matchday 14,1.9,0.727,1,0,4.5283
+2026-06-19,USA,Australia,Group D,Matchday 9,1.152,1.366,0,1,3.4518
+2026-06-19,Turkey,Paraguay,Group D,Matchday 9,1.353,1.037,1,0,3.5916
+2026-06-25,Turkey,USA,Group D,Matchday 15,1.859,0.874,1,0,4.2912
+2026-06-25,Paraguay,Australia,Group D,Matchday 15,1.265,1.116,1,0,3.3731
+2026-06-14,Germany,Curaçao,Group E,Matchday 4,3.516,0.542,3,0,5.3357
+2026-06-14,Ivory Coast,Ecuador,Group E,Matchday 4,0.911,1.435,0,1,3.8872
 2026-06-20,Germany,Ivory Coast,Group E,Matchday 10,1.952,0.859,1,0,4.3628
-2026-06-20,Ecuador,Curaçao,Group E,Matchday 10,3.207,0.502,3,0,5.3184
-2026-06-25,Curaçao,Ivory Coast,Group E,Matchday 15,0.802,1.829,0,1,4.3776
-2026-06-25,Ecuador,Germany,Group E,Matchday 15,1.284,1.175,1,0,3.3107
+2026-06-20,Ecuador,Curaçao,Group E,Matchday 10,3.208,0.502,3,0,5.3184
+2026-06-25,Curaçao,Ivory Coast,Group E,Matchday 15,0.803,1.828,0,1,4.3776
+2026-06-25,Ecuador,Germany,Group E,Matchday 15,1.285,1.174,1,0,3.336
 2026-06-14,Netherlands,Japan,Group F,Matchday 4,1.083,1.115,0,1,3.2619
 2026-06-14,Sweden,Tunisia,Group F,Matchday 4,1.439,1.031,1,0,3.7002
-2026-06-20,Netherlands,Sweden,Group F,Matchday 10,2.104,0.764,1,0,4.5867
+2026-06-20,Netherlands,Sweden,Group F,Matchday 10,2.105,0.763,1,0,4.5913
 2026-06-20,Tunisia,Japan,Group F,Matchday 10,0.639,1.721,0,1,4.5668
-2026-06-25,Japan,Sweden,Group F,Matchday 15,2.118,0.683,1,0,4.7097
-2026-06-25,Tunisia,Netherlands,Group F,Matchday 15,0.736,1.676,0,1,4.3711
+2026-06-25,Japan,Sweden,Group F,Matchday 15,2.12,0.683,1,0,4.7097
+2026-06-25,Tunisia,Netherlands,Group F,Matchday 15,0.737,1.675,0,1,4.3639
 2026-06-15,Belgium,Egypt,Group G,Matchday 5,1.897,0.76,1,0,4.4821
-2026-06-15,Iran,New Zealand,Group G,Matchday 5,1.736,0.833,1,0,4.2694
-2026-06-21,Belgium,Iran,Group G,Matchday 11,1.724,0.898,1,0,4.1462
-2026-06-21,New Zealand,Egypt,Group G,Matchday 11,1.16,1.12,1,0,3.2541
-2026-06-26,Egypt,Iran,Group G,Matchday 16,1.041,1.152,0,1,3.3592
-2026-06-26,New Zealand,Belgium,Group G,Matchday 16,0.896,1.715,0,1,4.1385
-2026-06-15,Spain,Cape Verde,Group H,Matchday 5,3.497,0.47,3,0,5.4048
+2026-06-15,Iran,New Zealand,Group G,Matchday 5,1.735,0.834,1,0,4.2622
+2026-06-21,Belgium,Iran,Group G,Matchday 11,1.725,0.898,1,0,4.1462
+2026-06-21,New Zealand,Egypt,Group G,Matchday 11,1.162,1.119,1,0,3.2541
+2026-06-26,Egypt,Iran,Group G,Matchday 16,1.042,1.151,0,1,3.3592
+2026-06-26,New Zealand,Belgium,Group G,Matchday 16,0.899,1.712,0,1,4.1385
+2026-06-15,Spain,Cape Verde,Group H,Matchday 5,3.498,0.47,3,0,5.4048
 2026-06-15,Saudi Arabia,Uruguay,Group H,Matchday 5,0.774,1.682,0,1,4.3217
-2026-06-21,Spain,Saudi Arabia,Group H,Matchday 11,2.871,0.528,2,0,5.2378
-2026-06-21,Uruguay,Cape Verde,Group H,Matchday 11,2.333,0.669,2,0,4.8301
-2026-06-26,Cape Verde,Saudi Arabia,Group H,Matchday 16,1.126,1.288,0,1,3.3928
-2026-06-26,Uruguay,Spain,Group H,Matchday 16,0.862,1.514,0,1,4.0344
+2026-06-21,Spain,Saudi Arabia,Group H,Matchday 11,2.87,0.528,2,0,5.2378
+2026-06-21,Uruguay,Cape Verde,Group H,Matchday 11,2.335,0.668,2,0,4.8362
+2026-06-26,Cape Verde,Saudi Arabia,Group H,Matchday 16,1.125,1.288,0,1,3.4072
+2026-06-26,Uruguay,Spain,Group H,Matchday 16,0.863,1.513,0,1,4.0344
 2026-06-16,France,Senegal,Group I,Matchday 6,1.821,0.883,1,0,4.2492
 2026-06-16,Iraq,Norway,Group I,Matchday 6,0.711,1.725,0,1,4.4556
-2026-06-22,France,Iraq,Group I,Matchday 12,2.413,0.632,2,0,4.9347
-2026-06-22,Norway,Senegal,Group I,Matchday 12,1.448,1.004,1,0,3.7558
+2026-06-22,France,Iraq,Group I,Matchday 12,2.411,0.632,2,0,4.9347
+2026-06-22,Norway,Senegal,Group I,Matchday 12,1.448,1.003,1,0,3.7558
 2026-06-26,Norway,France,Group I,Matchday 16,1.054,1.397,0,1,3.6293
-2026-06-26,Senegal,Iraq,Group I,Matchday 16,1.656,0.84,1,0,4.1935
-2026-06-16,Argentina,Algeria,Group J,Matchday 6,1.922,0.728,1,0,4.5394
+2026-06-26,Senegal,Iraq,Group I,Matchday 16,1.656,0.839,1,0,4.1935
+2026-06-16,Argentina,Algeria,Group J,Matchday 6,1.921,0.728,1,0,4.5394
 2026-06-16,Austria,Jordan,Group J,Matchday 6,2.041,0.781,1,0,4.5287
 2026-06-22,Argentina,Austria,Group J,Matchday 12,1.917,0.723,1,0,4.5548
-2026-06-22,Jordan,Algeria,Group J,Matchday 12,0.867,1.746,0,1,4.2146
-2026-06-27,Algeria,Austria,Group J,Matchday 17,1.157,1.102,1,0,3.2829
-2026-06-27,Jordan,Argentina,Group J,Matchday 17,0.553,2.662,0,2,5.1555
-2026-06-17,Portugal,DR Congo,Group K,Matchday 7,2.032,0.676,1,0,4.6707
+2026-06-22,Jordan,Algeria,Group J,Matchday 12,0.867,1.745,0,1,4.2073
+2026-06-27,Algeria,Austria,Group J,Matchday 17,1.157,1.101,1,0,3.2829
+2026-06-27,Jordan,Argentina,Group J,Matchday 17,0.554,2.661,0,2,5.1555
+2026-06-17,Portugal,DR Congo,Group K,Matchday 7,2.031,0.676,1,0,4.6707
 2026-06-17,Uzbekistan,Colombia,Group K,Matchday 7,0.768,1.772,0,1,4.3851
 2026-06-23,Portugal,Uzbekistan,Group K,Matchday 13,2.184,0.707,1,0,4.6915
-2026-06-23,Colombia,DR Congo,Group K,Matchday 13,1.819,0.753,1,0,4.4493
-2026-06-27,Colombia,Portugal,Group K,Matchday 17,1.22,1.249,0,1,3.2213
+2026-06-23,Colombia,DR Congo,Group K,Matchday 13,1.818,0.753,1,0,4.4493
+2026-06-27,Colombia,Portugal,Group K,Matchday 17,1.221,1.248,0,1,3.2213
 2026-06-27,DR Congo,Uzbekistan,Group K,Matchday 17,1.151,1.074,1,0,3.3145
-2026-06-17,England,Croatia,Group L,Matchday 7,1.659,0.868,1,0,4.146
-2026-06-17,Ghana,Panama,Group L,Matchday 7,1.018,1.614,0,1,3.8748
-2026-06-23,England,Ghana,Group L,Matchday 13,2.82,0.518,2,0,5.2395
-2026-06-23,Panama,Croatia,Group L,Matchday 13,1.12,1.548,0,1,3.6748
-2026-06-27,Panama,England,Group L,Matchday 17,0.703,1.982,0,1,4.6167
-2026-06-27,Croatia,Ghana,Group L,Matchday 17,2.311,0.736,2,0,4.715
+2026-06-17,England,Croatia,Group L,Matchday 7,1.66,0.868,1,0,4.146
+2026-06-17,Ghana,Panama,Group L,Matchday 7,1.019,1.612,0,1,3.8748
+2026-06-23,England,Ghana,Group L,Matchday 13,2.818,0.517,2,0,5.2395
+2026-06-23,Panama,Croatia,Group L,Matchday 13,1.121,1.548,0,1,3.6748
+2026-06-27,Panama,England,Group L,Matchday 17,0.703,1.983,0,1,4.6167
+2026-06-27,Croatia,Ghana,Group L,Matchday 17,2.309,0.736,2,0,4.715
+2026-07-04,W74,W77,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-04,W73,W75,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-05,W76,W78,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-05,W79,W80,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-06,W83,W84,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-06,W81,W82,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-07,W86,W88,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-07,W85,W87,,Round of 16,1.292,1.122,1,0,3.4072
+2026-07-09,W89,W90,,Quarter-final,1.292,1.122,1,0,3.4072
+2026-07-10,W93,W94,,Quarter-final,1.292,1.122,1,0,3.4072
+2026-07-11,W91,W92,,Quarter-final,1.292,1.122,1,0,3.4072
+2026-07-11,W95,W96,,Quarter-final,1.292,1.122,1,0,3.4072
+2026-07-14,W97,W98,,Semi-final,1.292,1.122,1,0,3.4072
+2026-07-15,W99,W100,,Semi-final,1.292,1.122,1,0,3.4072
+2026-07-18,L101,L102,,Match for third place,1.292,1.122,1,0,3.4072
+2026-07-19,W101,W102,,Final,1.292,1.122,1,0,3.4072
