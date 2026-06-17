@@ -26,8 +26,10 @@
 | **Pi-Ratings GLM (Exp C)** | **4.375** | [3.977, 4.781] | **+0.238** | **+0.039** | Drop-in ELO replacement; good 2014/2018; 2022 regression |
 | **Hybrid ELO+Pi GLM (Exp D)** | **4.387** | [3.984, 4.789] | **+0.250** | **+0.051** | Best model; 3/4 folds improve; stable across all folds |
 | Live-update CV (Exp E) | 4.324 | [3.922, 4.719] | +0.187 | +0.012 | Static 4.281 vs live 4.324; +0.043 delta within noise |
+| Stacked calibration (Exp 22, first pass) | 4.422 | [4.019, 4.824] | +0.285 | +0.035 vs Exp D | Large 2022 uplift (+0.453) but hurt 2014/2018; p=0.400 |
+| **Robust stacked calibration (Exp 22b)** | **4.441** | [4.031, 4.848] | **+0.305** | **+0.055 vs Exp D** | Conservative gating reduced collateral damage; 2022 +0.203; still 2018 −0.125; p=0.216 |
 
-> **Hybrid ELO+Pi GLM (Exp D) is the current best model at 4.387 pts/match.** No experiment has opened a statistically conclusive gap above the Poisson GLM baseline, but Exp D is the most consistent across all 4 folds. The WC 2022 fold is consistently the weakest across all approaches (3.4–3.9 pts vs 4.1–5.0 for other folds). The live-update mechanism (Exp E) provides no reliable scoring uplift — safe to keep for correctness but not a systematic improvement.
+> **Hybrid ELO+Pi GLM (Exp D) remains the best stable default.** Exp 22b reaches a higher pooled mean (4.441) but does not yet clear significance against Exp D (paired permutation p=0.216) and still regresses WC2018. Stacking is currently best treated as a conditional correction layer rather than a full replacement model.
 
 ---
 

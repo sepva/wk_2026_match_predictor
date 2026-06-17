@@ -2,6 +2,28 @@
 
 ---
 
+## Experiment — 2026-06-17 (Experiment 22b — Robust Stacked Calibration on Hybrid GLM)
+
+**Hypothesis**: A conservative stacked layer can keep the WC2022 uplift from Experiment 22 while reducing collateral regressions on other folds by using stronger regularisation, blend shrinkage, and fallback-to-base gating.
+
+**Approaches tested**: Updated notebook `22_stacked_calibration_hybrid_glm.ipynb` with:
+1. stronger meta-model alpha grid (`0.2, 0.5, 1.0, 2.0, 5.0`),
+2. feature-set search (`minimal`, `minimal_plus_weight`, `full`),
+3. robust inner objective `mean_fold_pts - 0.35 * std_fold_pts`,
+4. blend search (`w` in `[0.15, 0.25, 0.35, 0.50]`),
+5. fallback rule to base when blended expected Sporza gain is below threshold (`eps` in `[0.00, 0.03, 0.05]`).
+
+**Result**: **4.441 pts/match [4.031, 4.848]** vs base hybrid **4.387 [3.988, 4.789]** (**+0.055**).  
+Fold deltas (stacked - base): 2010 **+0.141**, 2014 **+0.000**, 2018 **−0.125**, 2022 **+0.203**.  
+Permutation test (paired): **p=0.216** (not significant).  
+Compared to original non-robust stack, fold damage is reduced (2014 no longer negative; 2018 regression smaller), but 2018 still underperforms.
+
+**Decision**: Keep Exp22b as a conditional candidate, not a replacement for Exp D. It is promising for regime-specific correction (especially WC2022-like behavior) but does not yet provide statistically significant global lift.
+
+**Next step**: Tighten gating and selection objective for worst-fold protection (e.g., stronger robustness penalty, subset-specific override rules) and test targeted feature additions.
+
+---
+
 ## Experiment — 2026-06-14 (Experiment E — Live-Update CV Test)
 
 **Hypothesis**: The generation notebook updates pi-ratings and form features per matchday using played WC results. Does this mechanism, when simulated in LOTO-CV, improve scores vs. using static pre-tournament snapshots?
