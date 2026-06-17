@@ -19,6 +19,7 @@
 | 2026-06-14 | `/ds-experiment` | `notebooks/models/15_regularised_glm_team_dummies.ipynb`, `research/experiment-results-2026-06-14.md`, `research/experiment-log.md` (updated) | Experiment B — Regularised GLM + L2 team dummies (PoissonRegressor + OHE, inner 3-fold CV, LOTO-CV): **4.379 [3.969, 4.781]** — new best (+0.043 vs GLM). 2014 fold regression (−0.281) due to inner CV selecting alpha≈0.001; CI overlaps GLM — not conclusive. Team dummies carry marginal signal but regularisation strategy needs alpha floor. |
 | 2026-06-14 | `/ds-experiment` | `notebooks/models/16_regularised_glm_team_dummies_alphafixed.ipynb`, `notebooks/models/17_pi_ratings_glm.ipynb`, `research/experiment-results-2026-06-14.md` (updated), `research/experiment-log.md` (updated) | Exp B-fixed (alpha≥0.1): **4.344 [3.945, 4.750]** — fixes 2014 (+0.140) but costs 2018/2022; +0.008 vs GLM. Team dummies ruled out. Exp C pi-ratings: **4.375 [3.977, 4.781]** — 3/4 folds improve but 2022 collapses (3.469, −0.297); p=0.398. ELO GLM remains best stable model. |
 | 2026-06-14 | manual | `notebooks/models/21_live_update_cv_test.ipynb`, `research/experiment-log.md` (updated), `research/experiment-results-2026-06-14.md` (updated) | Exp E — Live-update CV test: simulated per-matchday pi-rating and form updates (replicating the generation notebook mechanism) in LOTO-CV. **Static: 4.281, Live-update: 4.324 (+0.043)** — difference is noise (CIs fully overlap). WC 2014 benefits (+0.406) but WC 2018/2022 slightly decline. Mechanism is correct to keep for live predictions but provides no reliable scoring uplift. |
+| 2026-06-17 | manual (`deep-research` continuation) | `research/web-research-sweep-2026-06-17.md` | Broad web sweep completed for model/feature approaches (2022–2025 focus): strongest practical signal is hybrid/ensemble + calibration + exogenous covariates (bookmaker/market/squad context). Evidence for WC-specific exact-score SOTA remains sparse; no clear proof that Rue–Salvesen-style dynamics consistently beat static/hybrid baselines in WC settings. WC2022 scoring level only mildly above 2014/2018, so fold weakness is unlikely to be mean-goal inflation alone. |
 
 ## Artifact index
 
@@ -67,9 +68,10 @@
 | pi-ratings GLM notebook | `notebooks/models/17_pi_ratings_glm.ipynb` | `/ds-experiment` | 2026-06-14 |
 | experiment results (2026-06-14) | `research/experiment-results-2026-06-14.md` | `/ds-experiment` | 2026-06-14 |
 | live-update CV test notebook | `notebooks/models/21_live_update_cv_test.ipynb` | manual | 2026-06-14 |
+| web research sweep (2022–2025) | `research/web-research-sweep-2026-06-17.md` | manual (`deep-research` continuation) | 2026-06-17 |
 
 ## Recommended next steps
 
-Last run: manual live-update CV test on 2026-06-14.
-Result: per-matchday feature updates (pi-ratings + form from played WC results) yield +0.043 pts/match but within noise — mechanism is validated as neutral, not harmful.
-Suggested next: investigate improving the WC 2022 fold weakness (consistent across all experiments, 3.4–3.9 pts vs 4.1–5.0 for other folds) — possible causes: late 2022 WC scheduling disrupting form signals, or tactical shift post-COVID qualifying. OR pivot to generating updated WC 2026 predictions with live in-tournament results now that the mechanism is validated.
+Last run: manual web research sweep on 2026-06-17.
+Result: strongest evidence supports calibrated hybrid/ensemble modeling with exogenous context features; WC-specific exact-score benchmark evidence remains limited.
+Suggested next: run a targeted implementation experiment that adds a calibration/stacking layer on top of the current hybrid ELO+pi Poisson GLM and evaluate whether this specifically improves the weak WC 2022 fold without harming other folds.
