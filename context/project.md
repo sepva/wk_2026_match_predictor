@@ -40,7 +40,7 @@ Finish in the top 10 of a 100-person Sporza WK-pronostiek minicompetition by pre
 
 ## Non-Goals
 
-- Real-time data pipeline or automated submission
+- Real-time data pipeline or fully automated submission (token refresh was explored and dropped as overkill — manual push via `scripts/push_sporza.py` is sufficient)
 - Predicting results for already-played matches
 - Optimizing for the full 200,000-participant global leaderboard (only the 100-person group matters)
 
